@@ -1,0 +1,34 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>Active Listings</h2>
+
+    {% if listing_list %}
+        <table class="table">
+            <tr>
+                <th class="span2">Title</th>
+                <th class="span2">Category</th>
+                <th class="span1">Starting Bid</th>
+                <th class="span6">Description</th>
+                <th class="span1">Image</th>
+            </tr>
+            {% for listing in listing_list %}
+                <tr>
+                    <td>
+{#                        <a href="{% url 'detail' listing.id %}">{{ listing.title }}</a>#}
+                       {{ listing.title }}
+                    </td>
+                    <td>{{ listing.category }}</td>
+                    <td>$ {{ listing.starting_bid }}</td>
+                    <td class="text-left">{{ listing.description }}</td>
+                    <td class="images"><img src="{{ listing.image }}" alt="image"></td>
+
+                </tr>
+            {% endfor %}
+        </table>
+
+    {% else %}
+        <p>No active listings found</p>
+    {% endif %}
+
+{% endblock %}

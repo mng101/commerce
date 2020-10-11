@@ -1,0 +1,50 @@
+/* line 1, styles.scss */
+body {
+  padding: 5px;
+}
+
+/* line 5, styles.scss */
+table {
+  width: 75%;
+  border-collapse: collapse;
+  padding: 5px;
+}
+
+/* line 13, styles.scss */
+th, td {
+  padding: 5px;
+  text-align: left;
+}
+
+/* line 19, styles.scss */
+th[scope="col"] {
+  background: #ccc;
+}
+
+/* line 23, styles.scss */
+tr:nth-child(even) {
+  background: #eee;
+}
+
+/* line 27, styles.scss */
+tr:nth-child(odd) {
+  background: #ddd;
+}
+
+/* line 33, styles.scss */
+.images {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+/* line 38, styles.scss */
+.images img {
+  padding: 1px;
+  size: 50px;
+  border: 1px;
+}
+
+/* line 44, styles.scss */
+.img-fluid {
+  padding: 1px;
+}

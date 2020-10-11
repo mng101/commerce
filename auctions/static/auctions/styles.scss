@@ -1,0 +1,46 @@
+body {
+    padding: 5px;
+}
+
+table {
+    width: 75%;
+    border-collapse: collapse;
+//  border: 1px solid black;
+    padding: 5px;
+//  table-layout: fixed;
+}
+// Formatting table header and table data
+th, td {
+  padding: 5px;
+//  text-align: center;
+  text-align: left
+}
+// Table header background
+th[scope="col"] {
+  background: #ccc;
+}
+// Table background even rows
+tr:nth-child(even) {
+  background: #eee;
+}
+// Table backgroup odd rows
+tr:nth-child(odd) {
+  background: #ddd;
+}
+
+// General properties for "images" class
+//
+.images {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.images img {
+  padding: 1px;
+  size: 50px;
+  border: 1px;
+}
+
+.img-fluid {
+  padding: 1px;
+}
