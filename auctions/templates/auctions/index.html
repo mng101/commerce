@@ -15,8 +15,7 @@
             {% for listing in listing_list %}
                 <tr>
                     <td>
-{#                        <a href="{% url 'detail' listing.id %}">{{ listing.title }}</a>#}
-                       {{ listing.title }}
+                        <a href="{% url 'detail' listing.id %}">{{ listing.title }}</a>
                     </td>
                     <td>{{ listing.category }}</td>
                     <td>$ {{ listing.starting_bid }}</td>

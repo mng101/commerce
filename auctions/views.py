@@ -6,6 +6,7 @@ from django.shortcuts import render
 from django.urls import reverse, reverse_lazy
 
 from .models import User, Listing
+from .forms import ListingForm
 
 from django.views.generic import (View, TemplateView, ListView,
                                   DetailView, CreateView, DeleteView,
@@ -81,4 +82,50 @@ class ListingListView(ListView):
     def get_queryset(self):
         return Listing.objects.filter(active=True)
 
+
+class ListingDetailView(DetailView):
+    model = Listing
+    # template_name = 'auctions/itemdetail.html'
+    context_object_name = "listing"
+
+
+class ListingCreateView(LoginRequiredMixin, CreateView):
+    model = Listing
+    form_class = ListingForm
+    '''  
+    template_name = listing_form.html
+    This is the default name for the template to render the Listing Create form
+    and hence does not have to be explicitly identified
+    '''
+    success_url = reverse_lazy('index')
+
+    login_url = 'login'
+    '''
+    The user will be automatically redirected to the Login view if an unautenticated
+    user attempts to create a new Listing
+    '''
+
+    def form_valid(self, form):
+        form.instance.user_id = self.request.user
+        form.instance.valid = True
+        return super(ListingCreateView, self).form_valid(form)
+
+
+class ListingUpdateView(UpdateView):
+    model = Listing
+    form_class = ListingForm
+
+
+def close(request, **kwargs):
+    try:
+        l = Listing.objects.get(id=kwargs['pk'])
+        l.active = False
+        l.save()
+    # TODO - Attempt to improve the code above
+    # TODO Add confirmation before the listing is closed
+
+    except ObjectDoesNotExist:
+        raise Http404("Listing does not exist")
+
+    return HttpResponseRedirect(reverse("index"))
 

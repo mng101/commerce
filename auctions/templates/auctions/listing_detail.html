@@ -1,0 +1,53 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>Item Details</h2>
+
+    {% if listing  and listing.active == True %}
+        <div class="container">
+            <div class="images">
+                <img src="{{ listing.image }}" alt="image">
+            </div>
+            <br>
+
+            <table class="table table-borderless">
+                <col style="width:15%">
+                <col style="width:85%">
+                <tr>
+                    <td>Title:</td>
+                    <td class="text-left">{{ listing.title }}</td>
+                </tr>
+                <tr>
+                    <td>Description:</td>
+                    <td class="text-left">{{ listing.description }}</td>
+                </tr>
+                <tr>
+                    <td>Category:</td>
+                    <td class="text-left">{{ listing.category }}</td>
+                </tr>
+                <tr>
+                    <td>Date Listed:</td>
+                    <td class="text-left">{{ listing.date_listed }}</td>
+                </tr>
+                <tr>
+                    <td>Starting Bid:</td>
+                    <td class="text-left">${{ listing.starting_bid }}</td>
+                </tr>
+            </table>
+
+             {% if user == listing.user_id %}
+                <strong>This item is one of your listings</strong>
+                <br>
+                <div class="container">
+                <br>
+                <a class='btn btn-warning' href="{% url 'update' listing.pk %}">Update this Listing</a>
+                <a class='btn btn-danger' href="{% url 'close' listing.pk %}">Close this listing</a>
+                </div>
+            {% endif %}
+        </div>
+
+    {% else %}
+        <strong>Item details not found OR the Listing is not active</strong>
+    {% endif %}
+
+{% endblock %}

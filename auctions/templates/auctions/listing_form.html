@@ -1,0 +1,22 @@
+{% extends "auctions/layout.html" %}
+{% load crispy_forms_tags %}
+{% load crispy_forms_filters %}
+
+{% block body %}
+    <h2>
+        {% if not form.instance.pk %}
+            Post a new Auction Listing
+        {% else %}
+            Update the Auction Listing
+        {% endif %}
+    </h2>
+    <div class="container">
+        <form method="post">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <br>
+            <input type="submit" class="btn btn-primary" value="Save">
+        </form>
+    </div>
+
+{% endblock %}
