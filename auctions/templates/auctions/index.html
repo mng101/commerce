@@ -9,7 +9,8 @@
                 <th class="span2">Title</th>
                 <th class="span2">Category</th>
                 <th class="span1">Starting Bid</th>
-                <th class="span6">Description</th>
+                <th class=""span1>Highest Bid</th>
+                <th class="span5">Description</th>
                 <th class="span1">Image</th>
             </tr>
             {% for listing in listing_list %}
@@ -19,6 +20,12 @@
                     </td>
                     <td>{{ listing.category }}</td>
                     <td>$ {{ listing.starting_bid }}</td>
+                    <td>
+                        {% if listing.max_bid == 0 %}
+                            <strong>N/A</strong>
+                        {% else %}
+                            $ {{ listing.max_bid }}</td>
+                        {% endif %}
                     <td class="text-left">{{ listing.description }}</td>
                     <td class="images"><img src="{{ listing.image }}" alt="image"></td>
 

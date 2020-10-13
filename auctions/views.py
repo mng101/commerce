@@ -162,7 +162,7 @@ class BidCreateView(LoginRequiredMixin, CreateView):
         context['bid_details'] = util.get_bid_details(self.kwargs['pk'])
         return context
 
-    # def form_valid(self, form):
-    #     form.instance.user_id = self.request.user
-    #     form.instance.valid = True
-    #     return super(BidCreateView, self).form_valid(form)
+    def form_valid(self, form):
+        form.instance.user_id = self.request.user
+        form.instance.valid = True
+        return super(BidCreateView, self).form_valid(form)
