@@ -3,7 +3,7 @@ from django.forms import ModelForm, Textarea, NumberInput, URLField
 
 from . import util
 
-from .models import Listing, Bid
+from .models import Listing, Bid, Comment
 
 
 class ListingForm(ModelForm):
@@ -44,3 +44,12 @@ class BidForm(ModelForm):
         listing.bid_count += 1
         listing.save()
         return cleaned_data
+
+class CommentForm(ModelForm):
+    class Meta:
+        model = Comment
+        fields = ('title_id', 'text',)
+        widgets = {
+            'title_id': forms.HiddenInput(),
+            'text': Textarea(attrs={'cols': 80, "rows": 4}),
+        }

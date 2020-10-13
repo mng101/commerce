@@ -15,4 +15,5 @@ urlpatterns = [
     path('update/<pk>/', views.ListingUpdateView.as_view(), name="update"),
     path('close/<pk>/', views.close, name="close"),
     path('bid/<pk>/', views.BidCreateView.as_view(), name="bid"),
+    path('comment/<pk>/', views.CommentCreateView.as_view(), name="comment"),
 ]

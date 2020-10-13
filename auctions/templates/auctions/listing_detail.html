@@ -52,18 +52,26 @@
              {% if user == listing.user_id %}
                 <strong>This item is one of your listings</strong>
                 <br>
-                <div class="container">
-                <br>
-                <a class='btn btn-warning' href="{% url 'update' listing.pk %}">
+                {% if bid_details.max_bid == None %}
+                    <a class='btn btn-warning' href="{% url 'update' listing.pk %}">
                     Update this Listing</a>
+                {% else %}
+                    <p><strong>This lising has active bids. Updates are not permitted.</strong></p>
+                    <a class='btn btn-warning disabled' aria-disabled="true" href={% url 'update' listing.pk %}">
+                        Update this Listing</a>
+                {% endif %}
                 <a class='btn btn-danger' href="{% url 'close' listing.pk %}">
-                    Close this listing</a>
-                </div>
+                 Close this listiing</a>
              {% elif user.is_authenticated %}
                  <a class="btn btn-primary" href="{% url 'bid' pk=listing.pk %}">
                      Bid on this Listing</a>
+{#  TODO - Botton to add item to the users WatchList#}
+                 <a class="btn btn-primary" href="{% url 'comment' pk=listing.pk %}">
+                     Post a Comment</a>
             {% endif %}
         </div>
+
+{#        TODO - Add number of comments to the information displayed#}
 
     {% else %}
         <strong>Item details not found OR the Listing is not active</strong>

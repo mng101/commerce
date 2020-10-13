@@ -35,3 +35,16 @@ class Bid(models.Model):
 
     def __str__(self):
         return f"{self.user_id} - {self.title_id} = {self.bid_amount}"
+
+
+class Comment(models.Model):
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    title_id = models.ForeignKey(Listing, on_delete=models.CASCADE)
+    posting_date = models.DateField(auto_now_add=True)
+    text = models.CharField(max_length=256)
+
+    def __str__(self):
+        return f"{self.user_id} - {self.title_id} - {self.posting_date}"
+
+
+# TODO - Add model to track items on the watchlist

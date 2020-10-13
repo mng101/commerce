@@ -7,8 +7,8 @@ from django.urls import reverse, reverse_lazy
 
 from . import util
 
-from .models import User, Listing, Bid
-from .forms import ListingForm, BidForm
+from .models import User, Listing, Bid, Comment
+from .forms import ListingForm, BidForm, CommentForm
 from django.db.models import Max
 
 from django.views.generic import (View, TemplateView, ListView,
@@ -97,7 +97,8 @@ class ListingDetailView(DetailView):
         # Suplement Listing Details  with Bid Details
         context['bid_details'] = util.get_bid_details(self.kwargs['pk'])
         return context
-
+    # TODO - Review if call to bid_details is required. max_bid and bid_count
+    #   added to Listing model
 
 class ListingCreateView(LoginRequiredMixin, CreateView):
     model = Listing
@@ -146,7 +147,6 @@ class BidCreateView(LoginRequiredMixin, CreateView):
     #   Using default template 'bid_form.html'. Explicit declaration not required
 
     success_url = reverse_lazy('index')
-
     login_url = 'login'
     '''
     Unauthenticated users will be automatically directed to the 'login' page
@@ -166,3 +166,31 @@ class BidCreateView(LoginRequiredMixin, CreateView):
         form.instance.user_id = self.request.user
         form.instance.valid = True
         return super(BidCreateView, self).form_valid(form)
+
+class CommentCreateView(LoginRequiredMixin, CreateView):
+    model = Comment
+    form_class = CommentForm
+
+    success_url = reverse_lazy('index')
+    login_url = 'login'
+    '''
+    Unauthenticated users will be automatically directed to the 'login' page
+    '''
+
+    def get_initial(self):
+        return {'title_id': self.kwargs['pk'],
+                'user_id': self.request.user.id, }
+
+    def get_context_data(self, **kwargs):
+        context = super(CommentCreateView, self).get_context_data(**kwargs)
+        context['listing_details'] = util.get_listing_details(self.kwargs['pk'])
+        context['bid_details'] = util.get_bid_details(self.kwargs['pk'])
+        return context
+
+    def form_valid(self, form):
+        form.instance.user_id = self.request.user
+        form.instance.valid = True
+        return super(CommentCreateView, self).form_valid(form)
+
+# TODO - CommentListView to dispaly a list of comments posted on the Listing
+#       Add a link to the CommentListView to the item_detail.html template
