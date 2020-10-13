@@ -33,6 +33,20 @@
                     <td>Starting Bid:</td>
                     <td class="text-left">${{ listing.starting_bid }}</td>
                 </tr>
+                <tr>
+                    <td>Number of Bids:</td>
+                    <td>{{ bid_details.bid_count }}</td>
+                </tr>
+                <tr>
+                    <td>Highest Bid:</td>
+                    <td>
+                        {% if bid_details.max_bid == None %}
+                            Not Applicable
+                        {% else %}
+                            {{ bid_details.max_bid }}
+                        {% endif %}
+                    </td>
+                </tr>
             </table>
 
              {% if user == listing.user_id %}
@@ -40,9 +54,14 @@
                 <br>
                 <div class="container">
                 <br>
-                <a class='btn btn-warning' href="{% url 'update' listing.pk %}">Update this Listing</a>
-                <a class='btn btn-danger' href="{% url 'close' listing.pk %}">Close this listing</a>
+                <a class='btn btn-warning' href="{% url 'update' listing.pk %}">
+                    Update this Listing</a>
+                <a class='btn btn-danger' href="{% url 'close' listing.pk %}">
+                    Close this listing</a>
                 </div>
+             {% elif user.is_authenticated %}
+                 <a class="btn btn-primary" href="{% url 'bid' pk=listing.pk %}">
+                     Bid on this Listing</a>
             {% endif %}
         </div>
 

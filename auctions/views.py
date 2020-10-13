@@ -5,8 +5,11 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse, reverse_lazy
 
-from .models import User, Listing
-from .forms import ListingForm
+from . import util
+
+from .models import User, Listing, Bid
+from .forms import ListingForm, BidForm
+from django.db.models import Max
 
 from django.views.generic import (View, TemplateView, ListView,
                                   DetailView, CreateView, DeleteView,
@@ -75,6 +78,7 @@ def register(request):
 Start of updates to the distribution code
 '''
 
+
 class ListingListView(ListView):
     template_name = 'auctions/index.html'
     context_object_name = 'listing_list'
@@ -87,6 +91,12 @@ class ListingDetailView(DetailView):
     model = Listing
     # template_name = 'auctions/itemdetail.html'
     context_object_name = "listing"
+
+    def get_context_data(self, **kwargs):
+        context = super(ListingDetailView, self).get_context_data(**kwargs)
+        # Suplement Listing Details  with Bid Details
+        context['bid_details'] = util.get_bid_details(self.kwargs['pk'])
+        return context
 
 
 class ListingCreateView(LoginRequiredMixin, CreateView):
@@ -129,3 +139,30 @@ def close(request, **kwargs):
 
     return HttpResponseRedirect(reverse("index"))
 
+
+class BidCreateView(LoginRequiredMixin, CreateView):
+    model = Bid
+    form_class = BidForm
+    #   Using default template 'bid_form.html'. Explicit declaration not required
+
+    success_url = reverse_lazy('index')
+
+    login_url = 'login'
+    '''
+    Unauthenticated users will be automatically directed to the 'login' page
+    '''
+
+    def get_initial(self):
+        return {'title_id': self.kwargs['pk'],
+                'user_id': self.request.user.id, }
+
+    def get_context_data(self, **kwargs):
+        context = super(BidCreateView, self).get_context_data(**kwargs)
+        context['listing_details'] = util.get_listing_details(self.kwargs['pk'])
+        context['bid_details'] = util.get_bid_details(self.kwargs['pk'])
+        return context
+
+    # def form_valid(self, form):
+    #     form.instance.user_id = self.request.user
+    #     form.instance.valid = True
+    #     return super(BidCreateView, self).form_valid(form)
