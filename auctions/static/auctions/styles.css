@@ -1,6 +1,6 @@
 /* line 1, styles.scss */
 body {
-  padding: 5px;
+  padding: 2px;
 }
 
 /* line 5, styles.scss */
@@ -12,7 +12,7 @@ table {
 
 /* line 13, styles.scss */
 th, td {
-  padding: 5px;
+  padding: 2px;
   text-align: left;
 }
 
@@ -47,4 +47,14 @@ tr:nth-child(odd) {
 /* line 44, styles.scss */
 .img-fluid {
   padding: 1px;
+}
+
+/* line 48, styles.scss */
+.abc {
+  margin-left: auto;
+  font-size: 12px;
+}
+/* line 51, styles.scss */
+.abc ul {
+  color: #282899;
 }

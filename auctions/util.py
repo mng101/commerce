@@ -1,5 +1,5 @@
 import re
-from .models import Listing, Bid
+from .models import Listing, Bid, Comment
 from django.db.models import Max
 
 def get_bid_details(id):
@@ -38,3 +38,7 @@ def get_listing_details(id):
                        "image": image,
                    }
     return listing_details
+
+def get_comments(id):
+    comments = Comment.objects.filter(title_id=id)
+    return comments

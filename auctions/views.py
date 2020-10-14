@@ -1,5 +1,6 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
@@ -94,11 +95,12 @@ class ListingDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(ListingDetailView, self).get_context_data(**kwargs)
-        # Suplement Listing Details  with Bid Details
-        context['bid_details'] = util.get_bid_details(self.kwargs['pk'])
+        # Suplement Listing Details  with Comments posted
+        context['comments'] = util.get_comments(self.kwargs['pk'])
         return context
     # TODO - Review if call to bid_details is required. max_bid and bid_count
-    #   added to Listing model
+    #   added to Listing model. Delete if not required
+
 
 class ListingCreateView(LoginRequiredMixin, CreateView):
     model = Listing
@@ -108,8 +110,7 @@ class ListingCreateView(LoginRequiredMixin, CreateView):
     This is the default name for the template to render the Listing Create form
     and hence does not have to be explicitly identified
     '''
-    success_url = reverse_lazy('index')
-
+    # success_url = reverse_lazy('index')
     login_url = 'login'
     '''
     The user will be automatically redirected to the Login view if an unautenticated
@@ -146,7 +147,8 @@ class BidCreateView(LoginRequiredMixin, CreateView):
     form_class = BidForm
     #   Using default template 'bid_form.html'. Explicit declaration not required
 
-    success_url = reverse_lazy('index')
+    # success_url = reverse_lazy('index')
+    # success_url = reverse('detail', kwargs={'pk': self.kwargs['pk']})
     login_url = 'login'
     '''
     Unauthenticated users will be automatically directed to the 'login' page
@@ -171,7 +173,7 @@ class CommentCreateView(LoginRequiredMixin, CreateView):
     model = Comment
     form_class = CommentForm
 
-    success_url = reverse_lazy('index')
+    # success_url = reverse_lazy('index')
     login_url = 'login'
     '''
     Unauthenticated users will be automatically directed to the 'login' page
@@ -184,13 +186,10 @@ class CommentCreateView(LoginRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super(CommentCreateView, self).get_context_data(**kwargs)
         context['listing_details'] = util.get_listing_details(self.kwargs['pk'])
-        context['bid_details'] = util.get_bid_details(self.kwargs['pk'])
+        # context['bid_details'] = util.get_bid_details(self.kwargs['pk'])
         return context
 
     def form_valid(self, form):
         form.instance.user_id = self.request.user
         form.instance.valid = True
         return super(CommentCreateView, self).form_valid(form)
-
-# TODO - CommentListView to dispaly a list of comments posted on the Listing
-#       Add a link to the CommentListView to the item_detail.html template

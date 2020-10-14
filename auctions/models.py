@@ -36,6 +36,9 @@ class Bid(models.Model):
     def __str__(self):
         return f"{self.user_id} - {self.title_id} = {self.bid_amount}"
 
+    def get_absolute_url(self):
+        return reverse("detail", kwargs={'pk':self.title_id_id})
+
 
 class Comment(models.Model):
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -45,6 +48,9 @@ class Comment(models.Model):
 
     def __str__(self):
         return f"{self.user_id} - {self.title_id} - {self.posting_date}"
+
+    def get_absolute_url(self):
+        return reverse("detail", kwargs={'pk':self.title_id_id})
 
 
 # TODO - Add model to track items on the watchlist

@@ -1,5 +1,5 @@
 body {
-    padding: 5px;
+    padding: 2px;
 }
 
 table {
@@ -11,7 +11,7 @@ table {
 }
 // Formatting table header and table data
 th, td {
-  padding: 5px;
+  padding: 2px;
 //  text-align: center;
   text-align: left
 }
@@ -43,4 +43,12 @@ tr:nth-child(odd) {
 
 .img-fluid {
   padding: 1px;
+}
+
+.abc {
+  margin-left: auto;
+  font-size: 12px;
+  ul{
+    color: #282899;
+  }
 }
