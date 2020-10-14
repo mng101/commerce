@@ -9,7 +9,6 @@
                 <img src="{{ listing.image }}" alt="image">
             </div>
             <br>
-
             <table class="table table-borderless">
                 <col style="width:15%">
                 <col style="width:85%">
@@ -35,29 +34,39 @@
                 </tr>
                 <tr>
                     <td>Number of Bids:</td>
-                    <td>{{ bid_details.bid_count }}</td>
+                    <td>{{ listing.bid_count }}</td>
                 </tr>
                 <tr>
                     <td>Highest Bid:</td>
                     <td>
-                        {% if bid_details.max_bid == None %}
+                        {% if listing.max_bid == None %}
                             Not Applicable
                         {% else %}
-                            {{ bid_details.max_bid }}
+                            {{ listing.max_bid }}
                         {% endif %}
                     </td>
                 </tr>
             </table>
 
+            <h5>User Comments:</h5>
+            {% if comments %}
+                {% for comment in comments %}
+                    <ul>
+                        <li>{{ comment.text }}</li>
+                    </ul>
+                {% endfor %}
+            {% endif %}
+
+
              {% if user == listing.user_id %}
                 <strong>This item is one of your listings</strong>
                 <br>
-                {% if bid_details.max_bid == None %}
+                {% if listing.max_bid == 0.00 %}
                     <a class='btn btn-warning' href="{% url 'update' listing.pk %}">
                     Update this Listing</a>
                 {% else %}
                     <p><strong>This lising has active bids. Updates are not permitted.</strong></p>
-                    <a class='btn btn-warning disabled' aria-disabled="true" href={% url 'update' listing.pk %}">
+                    <a class='btn btn-warning disabled' aria-disabled="true" href="{% url 'update' listing.pk %}">
                         Update this Listing</a>
                 {% endif %}
                 <a class='btn btn-danger' href="{% url 'close' listing.pk %}">
