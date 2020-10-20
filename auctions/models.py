@@ -53,4 +53,11 @@ class Comment(models.Model):
         return reverse("detail", kwargs={'pk':self.title_id_id})
 
 
-# TODO - Add model to track items on the watchlist
+class Watchlist(models.Model):
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    title_id = models.ForeignKey(Listing, on_delete=models.CASCADE)
+    active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return f"{self.user_id} - {self.title_id}"
+

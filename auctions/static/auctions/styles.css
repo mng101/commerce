@@ -1,60 +1,60 @@
 /* line 1, styles.scss */
 body {
-  padding: 2px;
+  line-height: 1.15;
 }
 
-/* line 5, styles.scss */
+/* line 6, styles.scss */
 table {
   width: 75%;
   border-collapse: collapse;
   padding: 5px;
 }
 
-/* line 13, styles.scss */
+/* line 14, styles.scss */
 th, td {
   padding: 2px;
   text-align: left;
 }
 
-/* line 19, styles.scss */
+/* line 20, styles.scss */
 th[scope="col"] {
-  background: #ccc;
+  background: #cccccc;
 }
 
-/* line 23, styles.scss */
+/* line 24, styles.scss */
 tr:nth-child(even) {
-  background: #eee;
+  background: #eeeeee;
 }
 
-/* line 27, styles.scss */
+/* line 28, styles.scss */
 tr:nth-child(odd) {
-  background: #ddd;
+  background: #dddddd;
 }
 
-/* line 33, styles.scss */
+/* line 34, styles.scss */
 .images {
   display: flex;
   flex-wrap: wrap;
 }
 
-/* line 38, styles.scss */
+/* line 39, styles.scss */
 .images img {
   padding: 1px;
   size: 50px;
   border: 1px;
 }
 
-/* line 44, styles.scss */
+/* line 45, styles.scss */
 .img-fluid {
   padding: 1px;
 }
 
-/* line 48, styles.scss */
+/* line 49, styles.scss */
 .abc {
   margin-left: auto;
   font-size: 12px;
 }
-/* line 51, styles.scss */
+/* line 52, styles.scss */
 .abc ul {
   color: #282899;
 }

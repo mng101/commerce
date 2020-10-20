@@ -8,8 +8,8 @@ from django.urls import reverse, reverse_lazy
 
 from . import util
 
-from .models import User, Listing, Bid, Comment
-from .forms import ListingForm, BidForm, CommentForm
+from .models import User, Listing, Bid, Comment, Watchlist
+from .forms import ListingForm, BidForm, CommentForm, WatchlistForm
 from django.db.models import Max
 
 from django.views.generic import (View, TemplateView, ListView,
@@ -169,6 +169,7 @@ class BidCreateView(LoginRequiredMixin, CreateView):
         form.instance.valid = True
         return super(BidCreateView, self).form_valid(form)
 
+
 class CommentCreateView(LoginRequiredMixin, CreateView):
     model = Comment
     form_class = CommentForm
@@ -193,3 +194,77 @@ class CommentCreateView(LoginRequiredMixin, CreateView):
         form.instance.user_id = self.request.user
         form.instance.valid = True
         return super(CommentCreateView, self).form_valid(form)
+
+
+# class WatchlistCreateView(CreateView):
+#     model = Watchlist
+#     form_class = WatchlistForm
+#
+#     def get_initial(self):
+#         return {'title_id': self.kwargs['pk'],
+#                 'user_id': self.request.user.id, }
+#
+#     def form_valid(self, form):
+#         form.instance.user_id = self.request.user
+#         form.instance.valid = True
+
+# class WatchlistCreateView(LoginRequiredMixin, CreateView):
+#     Model = Watchlist
+#     form_class = WatchlistForm
+#
+#     def get_queryset(self):
+#         print("abc")
+#         pass
+#
+#     def form_valid(self, form):
+#         form.instance.user_id = self.request.user
+#         form.instance.valid = True
+#         return super(WatchlistCreateView, self).form_valid(form)
+#
+
+
+# def watchlist_add(request, **kwargs):
+#     # try:
+#         # x = Watchlist.objects.filter(title_id=kwargs['pk'], user_id=request.user)
+#         # w = Watchlist.objects.get_or_create(title_id=kwargs['pk'], user_id=request.user.id)[0]
+#         # print('Test')
+#     # w = Watchlist(title_id=kwargs['pk'], user_id=request.user.id)
+#     w = Watchlist(title_id=kwargs['pk'])
+#
+#     print (abc)
+#
+#     # except ObjectDoesNotExist:
+#     #     raise Http404("Listing does not exist")
+#
+#     return HttpResponseRedirect(reverse("index"))
+
+def watchlist_add (request, **kwargs):
+    try:
+        w, created = Watchlist.objects.get_or_create(
+            title_id=Listing.objects.get(id=kwargs['pk']),
+            user_id=request.user,
+        )
+        print(created)
+    except DatabaseError:
+        raise Http404("Listing does not exist")
+
+    return HttpResponseRedirect(reverse("index"))
+
+
+class BidListView(LoginRequiredMixin, ListView):
+    Model = Bid
+    template_name = 'auctions/index.html'
+    contect_object_name = 'listing_list'
+    login_url = 'login'
+
+    def get_queryset(self):
+        titles_bid_on = Bid.objects.filter(user_id__username=self.request.user).values_list('title_id').distinct()
+        return Listing.objects.filter(pk__in=titles_bid_on)
+
+
+    def get_context_data(self, **kwargs):
+        context = super(BidListView, self).get_context_data(**kwargs)
+        context['PageTitle'] = 'Items You have Bid On'
+        print ("Testing")
+        return context
+

@@ -3,7 +3,7 @@ from django.forms import ModelForm, Textarea, NumberInput, URLField
 
 from . import util
 
-from .models import Listing, Bid, Comment
+from .models import Listing, Bid, Comment, Watchlist
 
 
 class ListingForm(ModelForm):
@@ -53,3 +53,9 @@ class CommentForm(ModelForm):
             'title_id': forms.HiddenInput(),
             'text': Textarea(attrs={'cols': 80, "rows": 4}),
         }
+
+class WatchlistForm(ModelForm):
+    class Meta:
+        model = Watchlist
+        fields = ('title_id', 'user_id',)
+

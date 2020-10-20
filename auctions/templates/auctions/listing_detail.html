@@ -57,7 +57,6 @@
                 {% endfor %}
             {% endif %}
 
-
              {% if user == listing.user_id %}
                 <strong>This item is one of your listings</strong>
                 <br>
@@ -70,17 +69,16 @@
                         Update this Listing</a>
                 {% endif %}
                 <a class='btn btn-danger' href="{% url 'close' listing.pk %}">
-                 Close this listiing</a>
+                    Close this listiing</a>
              {% elif user.is_authenticated %}
                  <a class="btn btn-primary" href="{% url 'bid' pk=listing.pk %}">
-                     Bid on this Listing</a>
-{#  TODO - Botton to add item to the users WatchList#}
+                    Bid on this Listing</a>
+                 <a class="btn btn-primary" href="{% url 'watchlist' pk=listing.pk %}">
+                    Add to WatchList</a>
                  <a class="btn btn-primary" href="{% url 'comment' pk=listing.pk %}">
                      Post a Comment</a>
             {% endif %}
         </div>
-
-{#        TODO - Add number of comments to the information displayed#}
 
     {% else %}
         <strong>Item details not found OR the Listing is not active</strong>
