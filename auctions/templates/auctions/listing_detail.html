@@ -73,7 +73,7 @@
              {% elif user.is_authenticated %}
                  <a class="btn btn-primary" href="{% url 'bid' pk=listing.pk %}">
                     Bid on this Listing</a>
-                 <a class="btn btn-primary" href="{% url 'watchlist' pk=listing.pk %}">
+                 <a class="btn btn-primary" href="{% url 'add2watchlist' pk=listing.pk %}">
                     Add to WatchList</a>
                  <a class="btn btn-primary" href="{% url 'comment' pk=listing.pk %}">
                      Post a Comment</a>

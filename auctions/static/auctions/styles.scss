@@ -1,5 +1,11 @@
+html {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+  padding: 10px;
+  font-size: 16px;
+}
+
 body {
-    //padding: 2px;
   line-height: 1.15;
 }
 
@@ -13,7 +19,6 @@ table {
 // Formatting table header and table data
 th, td {
   padding: 2px;
-//  text-align: center;
   text-align: left
 }
 // Table header background
@@ -30,26 +35,25 @@ tr:nth-child(odd) {
 }
 
 // General properties for "images" class
-//
 .images {
   display: flex;
   flex-wrap: wrap;
 }
 
-.images img {
-  padding: 1px;
-  size: 50px;
-  border: 1px;
-}
-
-.img-fluid {
-  padding: 1px;
-}
-
-.abc {
-  margin-left: auto;
-  font-size: 12px;
-  ul{
-    color: #282899;
-  }
-}
+//.images img {
+//  padding: 1px;
+//  size: 50px;
+//  border: 1px;
+//}
+//
+//.img-fluid {
+//  padding: 1px;
+//}
+//
+//.abc {
+//  margin-left: auto;
+//  font-size: 12px;
+//  ul{
+//    color: #282899;
+//  }
+//}

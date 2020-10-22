@@ -3,14 +3,15 @@
 {% load crispy_forms_filters %}
 
 {% block body %}
-    <h2>
-        {% if not form.instance.pk %}
-            Post a new Auction Listing
-        {% else %}
-            Update the Auction Listing
-        {% endif %}
-    </h2>
     <div class="container">
+        <h2>
+            {% if not form.instance.pk %}
+                Post a new Auction Listing
+            {% else %}
+                Update the Auction Listing
+            {% endif %}
+        </h2>
+
         <form method="post">
             {% csrf_token %}
             {{ form|crispy }}

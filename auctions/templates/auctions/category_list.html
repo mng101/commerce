@@ -1,0 +1,21 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <div class="container">
+        <h2>Listing Categories</h2>
+        <br>
+        {% if category_list %}
+            {% for category in category_list %}
+                <ul>
+                    <li>
+                        <a href="{% url 'index' %}?category={{ category }}">
+                            {{ category }} </a>
+                    </li>
+                </ul>
+            {% endfor %}
+        {% else %}
+            Cannot locate Auction Categories
+        {% endif %}
+    </div>
+
+{% endblock %}

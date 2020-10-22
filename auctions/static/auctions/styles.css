@@ -1,60 +1,46 @@
 /* line 1, styles.scss */
+html {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+  padding: 10px;
+  font-size: 16px;
+}
+
+/* line 8, styles.scss */
 body {
   line-height: 1.15;
 }
 
-/* line 6, styles.scss */
+/* line 12, styles.scss */
 table {
   width: 75%;
   border-collapse: collapse;
   padding: 5px;
 }
 
-/* line 14, styles.scss */
+/* line 20, styles.scss */
 th, td {
   padding: 2px;
   text-align: left;
 }
 
-/* line 20, styles.scss */
+/* line 25, styles.scss */
 th[scope="col"] {
-  background: #cccccc;
+  background: #ccc;
 }
 
-/* line 24, styles.scss */
+/* line 29, styles.scss */
 tr:nth-child(even) {
-  background: #eeeeee;
+  background: #eee;
 }
 
-/* line 28, styles.scss */
+/* line 33, styles.scss */
 tr:nth-child(odd) {
-  background: #dddddd;
+  background: #ddd;
 }
 
-/* line 34, styles.scss */
+/* line 38, styles.scss */
 .images {
   display: flex;
   flex-wrap: wrap;
-}
-
-/* line 39, styles.scss */
-.images img {
-  padding: 1px;
-  size: 50px;
-  border: 1px;
-}
-
-/* line 45, styles.scss */
-.img-fluid {
-  padding: 1px;
-}
-
-/* line 49, styles.scss */
-.abc {
-  margin-left: auto;
-  font-size: 12px;
-}
-/* line 52, styles.scss */
-.abc ul {
-  color: #282899;
 }

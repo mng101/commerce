@@ -26,9 +26,17 @@
                     <a class="nav-link" href="{% url 'create' %}">Create Listing</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'bid' %}">Your Bids</a>
+                    <a class="nav-link" href="{% url 'index' %}?user={{ user.username }}">My Listings</a>
                 </li>
-{#  TODO - Add navigation links for MyListings, MyWatchLlist CategoryList#}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'bid' %}">My Bids</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'watchlist' %}">My Watchlist</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'categorylist' %}">Auction Category List</a>
+                </li>
 {#              End of Updates  #}
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'logout' %}">Log Out</a>

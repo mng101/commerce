@@ -1,7 +1,7 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-{#    <h2>Active Listings</h2>#}
+    <div class="container">
     {%  if PageTitle %}
         <h2>{{ PageTitle }}</h2>
     {% else %}
@@ -14,7 +14,7 @@
                 <th class="span2">Title</th>
                 <th class="span2">Category</th>
                 <th class="span1">Starting Bid</th>
-                <th class=""span1>Highest Bid</th>
+                <th class="span1">Highest Bid</th>
                 <th class="span5">Description</th>
                 <th class="span1">Image</th>
             </tr>
@@ -41,5 +41,6 @@
     {% else %}
         <p>No active listings found</p>
     {% endif %}
+    </div>
 
 {% endblock %}

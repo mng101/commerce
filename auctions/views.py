@@ -84,8 +84,24 @@ class ListingListView(ListView):
     template_name = 'auctions/index.html'
     context_object_name = 'listing_list'
 
-    def get_queryset(self):
-        return Listing.objects.filter(active=True)
+    def get_queryset(self, **kwargs):
+        queryset = Listing.objects.filter(active=True)
+
+        if self.request.GET.get('user'):
+            queryset = queryset.filter(user_id__username=self.request.GET.get('user'))
+        elif self.request.GET.get('category'):
+            queryset = queryset.filter(category=self.request.GET.get('category'))
+
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super(ListingListView, self).get_context_data(**kwargs)
+        if self.request.GET.get('user'):
+            context['PageTitle'] = 'Listing for User: ' + self.request.GET.get('user')
+        elif self.request.GET.get('category'):
+            context['PageTitle'] = 'Listing for category: ' + (self.request.GET.get('category'))
+
+        return context
 
 
 class ListingDetailView(DetailView):
@@ -110,7 +126,6 @@ class ListingCreateView(LoginRequiredMixin, CreateView):
     This is the default name for the template to render the Listing Create form
     and hence does not have to be explicitly identified
     '''
-    # success_url = reverse_lazy('index')
     login_url = 'login'
     '''
     The user will be automatically redirected to the Login view if an unautenticated
@@ -145,14 +160,8 @@ def close(request, **kwargs):
 class BidCreateView(LoginRequiredMixin, CreateView):
     model = Bid
     form_class = BidForm
-    #   Using default template 'bid_form.html'. Explicit declaration not required
 
-    # success_url = reverse_lazy('index')
-    # success_url = reverse('detail', kwargs={'pk': self.kwargs['pk']})
     login_url = 'login'
-    '''
-    Unauthenticated users will be automatically directed to the 'login' page
-    '''
 
     def get_initial(self):
         return {'title_id': self.kwargs['pk'],
@@ -174,11 +183,7 @@ class CommentCreateView(LoginRequiredMixin, CreateView):
     model = Comment
     form_class = CommentForm
 
-    # success_url = reverse_lazy('index')
     login_url = 'login'
-    '''
-    Unauthenticated users will be automatically directed to the 'login' page
-    '''
 
     def get_initial(self):
         return {'title_id': self.kwargs['pk'],
@@ -196,49 +201,9 @@ class CommentCreateView(LoginRequiredMixin, CreateView):
         return super(CommentCreateView, self).form_valid(form)
 
 
-# class WatchlistCreateView(CreateView):
-#     model = Watchlist
-#     form_class = WatchlistForm
-#
-#     def get_initial(self):
-#         return {'title_id': self.kwargs['pk'],
-#                 'user_id': self.request.user.id, }
-#
-#     def form_valid(self, form):
-#         form.instance.user_id = self.request.user
-#         form.instance.valid = True
-
-# class WatchlistCreateView(LoginRequiredMixin, CreateView):
-#     Model = Watchlist
-#     form_class = WatchlistForm
-#
-#     def get_queryset(self):
-#         print("abc")
-#         pass
-#
-#     def form_valid(self, form):
-#         form.instance.user_id = self.request.user
-#         form.instance.valid = True
-#         return super(WatchlistCreateView, self).form_valid(form)
-#
 
 
-# def watchlist_add(request, **kwargs):
-#     # try:
-#         # x = Watchlist.objects.filter(title_id=kwargs['pk'], user_id=request.user)
-#         # w = Watchlist.objects.get_or_create(title_id=kwargs['pk'], user_id=request.user.id)[0]
-#         # print('Test')
-#     # w = Watchlist(title_id=kwargs['pk'], user_id=request.user.id)
-#     w = Watchlist(title_id=kwargs['pk'])
-#
-#     print (abc)
-#
-#     # except ObjectDoesNotExist:
-#     #     raise Http404("Listing does not exist")
-#
-#     return HttpResponseRedirect(reverse("index"))
-
-def watchlist_add (request, **kwargs):
+def add2watchlist (request, **kwargs):
     try:
         w, created = Watchlist.objects.get_or_create(
             title_id=Listing.objects.get(id=kwargs['pk']),
@@ -268,3 +233,31 @@ class BidListView(LoginRequiredMixin, ListView):
         print ("Testing")
         return context
 
+
+class WatchlistListView(LoginRequiredMixin, ListView):
+    Model = Watchlist
+    template_name = 'auctions/index.html'
+    context_object_name = 'listing_list'
+    login_url = 'login'
+
+    def get_queryset(self):
+        watchlist_items = Watchlist.objects.filter(user_id__username=self.request.user).values_list('title_id').distinct()
+        return Listing.objects.filter(pk__in=watchlist_items)
+
+    def get_context_data(self, **kwargs):
+        context = super(WatchlistListView, self).get_context_data(**kwargs)
+        context['PageTitle'] = 'Your Watchlist Items'
+        return context
+
+
+class CategoryListView(ListView):
+    Model = Listing
+    template_name = 'auctions/category_list.html'
+    context_object_name='category_list'
+    login_url = 'login'
+
+    def get_queryset(self):
+        queryset = []
+        for item in (Listing.objects.filter(active=True).values_list('category').distinct()):
+            queryset.append(item[0])
+        return queryset
