@@ -148,8 +148,6 @@ def close(request, **kwargs):
         l = Listing.objects.get(id=kwargs['pk'])
         l.active = False
         l.save()
-    # TODO - Attempt to improve the code above
-    # TODO Add confirmation before the listing is closed
 
     except ObjectDoesNotExist:
         raise Http404("Listing does not exist")
@@ -213,24 +211,22 @@ def add2watchlist (request, **kwargs):
     except DatabaseError:
         raise Http404("Listing does not exist")
 
-    return HttpResponseRedirect(reverse("index"))
+    # return HttpResponseRedirect(reverse("index"))
+
 
 
 class BidListView(LoginRequiredMixin, ListView):
     Model = Bid
-    template_name = 'auctions/index.html'
+    template_name = 'auctions/bid_list.html'
     contect_object_name = 'listing_list'
     login_url = 'login'
 
     def get_queryset(self):
-        titles_bid_on = Bid.objects.filter(user_id__username=self.request.user).values_list('title_id').distinct()
-        return Listing.objects.filter(pk__in=titles_bid_on)
-
+        return Bid.objects.filter(user_id__username=self.request.user).distinct().select_related('title_id')
 
     def get_context_data(self, **kwargs):
         context = super(BidListView, self).get_context_data(**kwargs)
         context['PageTitle'] = 'Items You have Bid On'
-        print ("Testing")
         return context
 
 

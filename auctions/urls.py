@@ -21,5 +21,4 @@ urlpatterns = [
     path('comment/<pk>/', views.CommentCreateView.as_view(), name="comment"),
     # path('watchlist/<pk>/', views.WatchlistCreateView.as_view(), name="watchlist"),
     path('add2watchlist/<pk>/', views.add2watchlist, name="add2watchlist"),
-    # TODO rename URL /watchlist to /watchlist_add
 ]

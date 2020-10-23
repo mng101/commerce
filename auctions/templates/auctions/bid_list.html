@@ -1,0 +1,40 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <div class="container">
+    {%  if PageTitle %}
+        <h2>{{ PageTitle }}</h2>
+    {% else %}
+        <h2>Active Listings</h2>
+    {% endif %}
+
+    {% if bid_list %}
+        <table class="table">
+            <tr>
+                <th class="span2">Title</th>
+                <th class="span2">Category</th>
+                <th class="span1">Starting Bid</th>
+                <th class="span1">Highest Bid</th>
+                <th class="span5">Description</th>
+                <th class="span1">Image</th>
+            </tr>
+            {% for bid in bid_list %}
+                <tr>
+                    <td>
+                        <a href="{% url 'detail' bid.title_id_id %}">{{ bid.title_id.title }}</a>
+                    </td>
+                    <td>{{ bid.title_id.category }}</td>
+                    <td>$ {{ bid.title_id.starting_bid }}</td>
+                    <td>$ {{ bid.title_id.max_bid }}</td>
+                     <td class="text-left">{{ bid.title_id.description }}</td>
+                    <td class="images"><img src="{{ bid.title_id.image }}" alt="image"></td>
+                </tr>
+            {% endfor %}
+        </table>
+
+    {% else %}
+        <p>No active listings found</p>
+    {% endif %}
+    </div>
+
+{% endblock %}
