@@ -9,23 +9,11 @@
             <img src="{{ listing_details.image }}" alt="image">
         </div>
         <p>Listing Title: <strong>{{ listing_details.title }}</strong></p>
-{#        <p>Starting Bid: $ <strong>{{ listing_details.starting_bid }}</strong></p>#}
-{#        <p>Number of bids received: <strong>{{ bid_details.bid_count }}</strong></p>#}
-{#        {% if bid_details.max_bid == None %}#}
-{#                <p>Highest Bid: <strong> Not Applicable </strong></p>#}
-{#        {% else %}#}
-{#            <p>Highest Bid: <strong>$ {{ bid_details.max_bid|floatformat:2 }}</strong></p>#}
-{#        {% endif %}#}
+
         <form method="post">
             {% csrf_token %}
             {{ form|crispy }}
             <br>
-
-{#            <h5><strong>Auction Rules:</strong></h5>#}
-{#            <strong>#}
-{#                <p>Your bid must be a minimum of $1.00 higher than the Highest Bid, for it to be accepted</p>#}
-{#                <p>If no previous bids, your bid must be $1.00 higher than the Starting Bid</p>#}
-{#            </strong>#}
 
             <input type="submit" class="btn btn-primary" value="Save">
         </form>

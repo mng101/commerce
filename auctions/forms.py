@@ -35,11 +35,6 @@ class BidForm(ModelForm):
         if (cleaned_data < listing.max_bid + 1) \
                 or (cleaned_data < listing.starting_bid + 1):
             raise forms.ValidationError("Bid Amount does not confirm to Auction Rules. Retry")
-        # max_bid = util.get_bid_details(self.initial['title_id'])['max_bid']
-        # if (max_bid == None):
-        #     max_bid = cleaned_data['title_id'].starting_bid
-        # if ((cleaned_data < (max_bid + 1))):
-        #     raise forms.ValidationError("Bid Amount does not confirm to Auction Rules. Retry")
         listing.max_bid = cleaned_data
         listing.bid_count += 1
         listing.save()

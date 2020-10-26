@@ -14,9 +14,10 @@
                 <th class="span2">Title</th>
                 <th class="span2">Category</th>
                 <th class="span1">Starting Bid</th>
+                <th class="span1">Your Bid</th>
                 <th class="span1">Highest Bid</th>
-                <th class="span5">Description</th>
-                <th class="span1">Image</th>
+                <th class="span1">Listing Active</th>>
+                <th class="span4">Status of your Bid</th>
             </tr>
             {% for bid in bid_list %}
                 <tr>
@@ -25,9 +26,27 @@
                     </td>
                     <td>{{ bid.title_id.category }}</td>
                     <td>$ {{ bid.title_id.starting_bid }}</td>
+                    <td>$ {{ bid.bid_amount }}</td>
                     <td>$ {{ bid.title_id.max_bid }}</td>
-                     <td class="text-left">{{ bid.title_id.description }}</td>
-                    <td class="images"><img src="{{ bid.title_id.image }}" alt="image"></td>
+                    <td>{{ bid.title_id.active }}</td>
+                    <td>
+                        {% if bid.title_id.active %}
+                            {% if bid.bid_amount == bid.title_id.max_bid %}
+                                Your bid is the highest for this item
+                            {% else %}
+                                You are outbid on this item
+                            {% endif %}
+                        {% else %}
+                            {% if bid.bid_amount == bid.title_id.max_bid %}
+                                <strong>You have won this auction</strong>
+                            {% else %}
+                                Auction Closed. You were outbid.
+                            {% endif %}
+
+                        {% endif %}
+
+                    </td>
+
                 </tr>
             {% endfor %}
         </table>

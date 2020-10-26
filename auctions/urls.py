@@ -19,6 +19,5 @@ urlpatterns = [
     path('close/<pk>/', views.close, name="close"),
     path('bid/<pk>/', views.BidCreateView.as_view(), name="bid"),
     path('comment/<pk>/', views.CommentCreateView.as_view(), name="comment"),
-    # path('watchlist/<pk>/', views.WatchlistCreateView.as_view(), name="watchlist"),
     path('add2watchlist/<pk>/', views.add2watchlist, name="add2watchlist"),
 ]

@@ -19,6 +19,8 @@ from django.views.generic import (View, TemplateView, ListView,
 '''
 View in distribution code replace with a ListingListView
 '''
+
+
 # def index(request):
 #     return render(request, "auctions/index.html")
 
@@ -106,7 +108,6 @@ class ListingListView(ListView):
 
 class ListingDetailView(DetailView):
     model = Listing
-    # template_name = 'auctions/itemdetail.html'
     context_object_name = "listing"
 
     def get_context_data(self, **kwargs):
@@ -121,11 +122,8 @@ class ListingDetailView(DetailView):
 class ListingCreateView(LoginRequiredMixin, CreateView):
     model = Listing
     form_class = ListingForm
-    '''  
-    template_name = listing_form.html
-    This is the default name for the template to render the Listing Create form
-    and hence does not have to be explicitly identified
-    '''
+    # template_name = listing_form.html - Default template name for ListingCreateView
+
     login_url = 'login'
     '''
     The user will be automatically redirected to the Login view if an unautenticated
@@ -199,9 +197,7 @@ class CommentCreateView(LoginRequiredMixin, CreateView):
         return super(CommentCreateView, self).form_valid(form)
 
 
-
-
-def add2watchlist (request, **kwargs):
+def add2watchlist(request, **kwargs):
     try:
         w, created = Watchlist.objects.get_or_create(
             title_id=Listing.objects.get(id=kwargs['pk']),
@@ -210,9 +206,6 @@ def add2watchlist (request, **kwargs):
         print(created)
     except DatabaseError:
         raise Http404("Listing does not exist")
-
-    # return HttpResponseRedirect(reverse("index"))
-
 
 
 class BidListView(LoginRequiredMixin, ListView):
@@ -237,7 +230,8 @@ class WatchlistListView(LoginRequiredMixin, ListView):
     login_url = 'login'
 
     def get_queryset(self):
-        watchlist_items = Watchlist.objects.filter(user_id__username=self.request.user).values_list('title_id').distinct()
+        watchlist_items = Watchlist.objects.filter(user_id__username=self.request.user).values_list(
+            'title_id').distinct()
         return Listing.objects.filter(pk__in=watchlist_items)
 
     def get_context_data(self, **kwargs):
@@ -249,7 +243,7 @@ class WatchlistListView(LoginRequiredMixin, ListView):
 class CategoryListView(ListView):
     Model = Listing
     template_name = 'auctions/category_list.html'
-    context_object_name='category_list'
+    context_object_name = 'category_list'
     login_url = 'login'
 
     def get_queryset(self):
