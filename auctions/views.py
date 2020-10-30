@@ -115,14 +115,12 @@ class ListingDetailView(DetailView):
         # Suplement Listing Details  with Comments posted
         context['comments'] = util.get_comments(self.kwargs['pk'])
         return context
-    # TODO - Review if call to bid_details is required. max_bid and bid_count
-    #   added to Listing model. Delete if not required
 
 
 class ListingCreateView(LoginRequiredMixin, CreateView):
     model = Listing
     form_class = ListingForm
-    # template_name = listing_form.html - Default template name for ListingCreateView
+    # template_name = listing_form.html - Using default template for ListingCreateView
 
     login_url = 'login'
     '''

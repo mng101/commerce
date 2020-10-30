@@ -29,6 +29,7 @@ class BidForm(ModelForm):
             'bid_amount': forms.NumberInput(),
         }
 
+
     def clean_bid_amount(self):
         cleaned_data = self.cleaned_data.get('bid_amount')
         listing = Listing.objects.get(pk=self.initial['title_id'])
@@ -40,6 +41,7 @@ class BidForm(ModelForm):
         listing.save()
         return cleaned_data
 
+
 class CommentForm(ModelForm):
     class Meta:
         model = Comment
@@ -49,8 +51,8 @@ class CommentForm(ModelForm):
             'text': Textarea(attrs={'cols': 80, "rows": 4}),
         }
 
+
 class WatchlistForm(ModelForm):
     class Meta:
         model = Watchlist
         fields = ('title_id', 'user_id',)
-
