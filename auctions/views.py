@@ -114,6 +114,11 @@ class ListingDetailView(DetailView):
         context = super(ListingDetailView, self).get_context_data(**kwargs)
         # Suplement Listing Details  with Comments posted
         context['comments'] = util.get_comments(self.kwargs['pk'])
+        if Watchlist.objects.filter(title_id=self.kwargs['pk'], user_id=self.request.user):
+            context['on_watchlist'] = True
+        else:
+            context['on_watchlist'] = False
+        context['my_bid'] = util.get_my_bid(self.kwargs['pk'], self.request.user)
         return context
 
 
@@ -186,7 +191,6 @@ class CommentCreateView(LoginRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super(CommentCreateView, self).get_context_data(**kwargs)
         context['listing_details'] = util.get_listing_details(self.kwargs['pk'])
-        # context['bid_details'] = util.get_bid_details(self.kwargs['pk'])
         return context
 
     def form_valid(self, form):
@@ -204,6 +208,19 @@ def add2watchlist(request, **kwargs):
         print(created)
     except DatabaseError:
         raise Http404("Listing does not exist")
+
+    return HttpResponseRedirect(reverse("index"))
+
+
+def removewatchlist(request, **kwargs):
+    try:
+        w = Watchlist.objects.get(title_id=kwargs['pk'], user_id=request.user, active=True)
+        w.active = False
+        w.save()
+    except DatabaseError:
+        raise Http404("Watchlist does not exist")
+
+    return HttpResponseRedirect(reverse("index"))
 
 
 class BidListView(LoginRequiredMixin, ListView):
@@ -228,8 +245,8 @@ class WatchlistListView(LoginRequiredMixin, ListView):
     login_url = 'login'
 
     def get_queryset(self):
-        watchlist_items = Watchlist.objects.filter(user_id__username=self.request.user).values_list(
-            'title_id').distinct()
+        watchlist_items = Watchlist.objects.filter(user_id__username=self.request.user, active=True).values_list(
+            'title_id')
         return Listing.objects.filter(pk__in=watchlist_items)
 
     def get_context_data(self, **kwargs):

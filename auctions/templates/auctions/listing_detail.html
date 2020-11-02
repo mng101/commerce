@@ -3,85 +3,103 @@
 {% block body %}
     <h2>Item Details</h2>
 
-    {% if listing  and listing.active == True %}
-        <div class="container">
-            <div class="images">
-                <img src="{{ listing.image }}" alt="image">
-            </div>
-            <br>
-            <table class="table table-borderless">
-                <col style="width:15%">
-                <col style="width:85%">
-                <tr>
-                    <td>Title:</td>
-                    <td class="text-left">{{ listing.title }}</td>
-                </tr>
-                <tr>
-                    <td>Description:</td>
-                    <td class="text-left">{{ listing.description }}</td>
-                </tr>
-                <tr>
-                    <td>Category:</td>
-                    <td class="text-left">{{ listing.category }}</td>
-                </tr>
-                <tr>
-                    <td>Date Listed:</td>
-                    <td class="text-left">{{ listing.date_listed }}</td>
-                </tr>
-                <tr>
-                    <td>Starting Bid:</td>
-                    <td class="text-left">${{ listing.starting_bid }}</td>
-                </tr>
-                <tr>
-                    <td>Number of Bids:</td>
-                    <td>{{ listing.bid_count }}</td>
-                </tr>
-                <tr>
-                    <td>Highest Bid:</td>
-                    <td>
-                        {% if listing.max_bid == None %}
-                            Not Applicable
-                        {% else %}
-                            {{ listing.max_bid }}
-                        {% endif %}
-                    </td>
-                </tr>
-            </table>
-
-            <h5>User Comments:</h5>
-            {% if comments %}
-                {% for comment in comments %}
-                    <ul>
-                        <li>{{ comment.text }}</li>
-                    </ul>
-                {% endfor %}
-            {% endif %}
-
-             {% if user == listing.user_id %}
-                <strong>This item is one of your listings</strong>
-                <br>
-                {% if listing.max_bid == 0.00 %}
-                    <a class='btn btn-warning' href="{% url 'update' listing.pk %}">
-                    Update this Listing</a>
-                {% else %}
-                    <p><strong>This lising has active bids. Updates are not permitted.</strong></p>
-                    <a class='btn btn-warning disabled' aria-disabled="true" href="{% url 'update' listing.pk %}">
-                        Update this Listing</a>
-                {% endif %}
-                <a class='btn btn-danger' href="{% url 'close' listing.pk %}">
-                    Close this listiing</a>
-             {% elif user.is_authenticated %}
-                 <a class="btn btn-primary" href="{% url 'bid' pk=listing.pk %}">
-                    Bid on this Listing</a>
-                 <a class="btn btn-primary" href="{% url 'add2watchlist' pk=listing.pk %}">
-                    Add to WatchList</a>
-                 <a class="btn btn-primary" href="{% url 'comment' pk=listing.pk %}">
-                     Post a Comment</a>
-            {% endif %}
+    <div class="container">
+        <div class="images">
+            <img src="{{ listing.image }}" alt="image">
         </div>
+        <br>
+        <table class="table table-borderless">
+            <col style="width:15%">
+            <col style="width:85%">
+            <tr>
+                <td>Title:</td>
+                <td class="text-left">{{ listing.title }}</td>
+            </tr>
+            <tr>
+                <td>Description:</td>
+                <td class="text-left">{{ listing.description }}</td>
+            </tr>
+            <tr>
+                <td>Category:</td>
+                <td class="text-left">{{ listing.category }}</td>
+            </tr>
+            <tr>
+                <td>Date Listed:</td>
+                <td class="text-left">{{ listing.date_listed }}</td>
+            </tr>
+            <tr>
+                <td>Starting Bid:</td>
+                <td class="text-left">${{ listing.starting_bid }}</td>
+            </tr>
+            <tr>
+                <td>Number of Bids:</td>
+                <td>{{ listing.bid_count }}</td>
+            </tr>
+            <tr>
+                <td>Highest Bid:</td>
+                <td>
+                    {% if listing.max_bid == None %}
+                        Not Applicable
+                    {% else %}
+                        {{ listing.max_bid }}
+                    {% endif %}
+                </td>
+            </tr>
+        </table>
 
-    {% else %}
-        <strong>Item details not found OR the Listing is not active</strong>
-    {% endif %}
+        <h5>User Comments:</h5>
+        {% if comments %}
+            {% for comment in comments %}
+                <ul>
+                    <li>{{ comment.text }}</li>
+                </ul>
+            {% endfor %}
+        {% endif %}
+
+        {% if user == listing.user_id %}
+{#            On the Listing Details page, a user can update their own listing if there are no bids. #}
+{#            The user can also Close the Auction #}
+            <strong>This item is one of your listings</strong>
+            <br>
+            {% if listing.max_bid == 0.00 %}
+                <a class='btn btn-warning' href="{% url 'update' listing.pk %}">
+                Update this Listing</a>
+            {% else %}
+                <p><strong>This lising has active bids. Updates are not permitted.</strong></p>
+                <a class='btn btn-warning disabled' aria-disabled="true" href="{% url 'update' listing.pk %}">
+                    Update this Listing</a>
+            {% endif %}
+            <a class='btn btn-danger' href="{% url 'close' listing.pk %}">
+                Close this listiing</a>
+
+        {% elif listing.active == False %}
+{#          Status of a Users bid on the Auction Listing. Out bid, Winner, or no Bids  #}
+            {% if my_bid and my_bid.bid_amount < listing.max_bid %}
+                <p><strong>Listing is now closed. You were out bid.</strong></p>
+            {% elif my_bid and my_bid.bid_amount == listing.max_bid %}
+                <P><strong>The Auction is now closed. You are the WINNER</strong></P>
+            {% else %}
+                <p><strong>The Auction is now closed. You did not bid on this item</strong></p>
+            {% endif %}
+
+        {% elif user.is_authenticated %}
+{#          Authenticated users can add or remove the item from the Watchlist, Bid on the item, and post Comments #}
+{#          Unauthenticated users can also access the details page, but without the options listed above#}
+            {% if on_watchlist == True %}
+                <p><strong>This item is on your Watchlist</strong></p>
+                <a class="btn btn-warning" href="{% url 'removewatchlist' listing.pk %}">
+                    Remove from Watchlist</a>
+            {% else %}
+                <a class="btn btn-primary" href="{% url 'add2watchlist' pk=listing.pk %}">
+                    Add to WatchList</a>
+            {% endif %}
+             <a class="btn btn-primary" href="{% url 'bid' pk=listing.pk %}">
+                Bid on this Listing</a>
+             <a class="btn btn-primary" href="{% url 'comment' pk=listing.pk %}">
+                 Post a Comment</a>
+
+        {% endif %}
+
+    </div>
 
 {% endblock %}

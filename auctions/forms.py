@@ -29,7 +29,6 @@ class BidForm(ModelForm):
             'bid_amount': forms.NumberInput(),
         }
 
-
     def clean_bid_amount(self):
         cleaned_data = self.cleaned_data.get('bid_amount')
         listing = Listing.objects.get(pk=self.initial['title_id'])

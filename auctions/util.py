@@ -35,3 +35,9 @@ def get_listing_details(id):
 def get_comments(id):
     comments = Comment.objects.filter(title_id=id)
     return comments
+
+
+def get_my_bid(t_id, u_id):
+    my_bid = Bid.objects.filter(title_id=t_id, user_id=u_id)
+    if my_bid:
+        return my_bid[0]
