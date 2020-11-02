@@ -114,11 +114,15 @@ class ListingDetailView(DetailView):
         context = super(ListingDetailView, self).get_context_data(**kwargs)
         # Suplement Listing Details  with Comments posted
         context['comments'] = util.get_comments(self.kwargs['pk'])
-        if Watchlist.objects.filter(title_id=self.kwargs['pk'], user_id=self.request.user):
-            context['on_watchlist'] = True
-        else:
-            context['on_watchlist'] = False
-        context['my_bid'] = util.get_my_bid(self.kwargs['pk'], self.request.user)
+        if self.request.user.id is not None:
+            # If the user is authenticated, get additional info for the listing details page
+            if Watchlist.objects.filter(title_id=self.kwargs['pk'], user_id=self.request.user, active=True):
+                context['on_watchlist'] = True
+            else:
+                context['on_watchlist'] = False
+
+            context['my_bid'] = util.get_my_bid(self.kwargs['pk'], self.request.user)
+
         return context
 
 
@@ -204,6 +208,7 @@ def add2watchlist(request, **kwargs):
         w, created = Watchlist.objects.get_or_create(
             title_id=Listing.objects.get(id=kwargs['pk']),
             user_id=request.user,
+            active=True,
         )
         print(created)
     except DatabaseError:

@@ -59,8 +59,7 @@
         {% if user == listing.user_id %}
 {#            On the Listing Details page, a user can update their own listing if there are no bids. #}
 {#            The user can also Close the Auction #}
-            <strong>This item is one of your listings</strong>
-            <br>
+            <p><strong>This item is one of your listings</strong></p>
             {% if listing.max_bid == 0.00 %}
                 <a class='btn btn-warning' href="{% url 'update' listing.pk %}">
                 Update this Listing</a>
