@@ -3,8 +3,8 @@
 {% load crispy_forms_filters %}
 
 {% block body %}
-    <h2>Post a Bid on this Item</h2>
     <div class="container">
+        <h2>Post a Bid on this Item</h2>
         <div class="images">
             <img src="{{ listing_details.image }}" alt="image">
         </div>
@@ -22,10 +22,8 @@
             <br>
 
             <h5><strong>Auction Rules:</strong></h5>
-            <strong>
-                <p>Your bid must be a minimum of $1.00 higher than the Highest Bid, for it to be accepted</p>
-                <p>If no previous bids, your bid must be $1.00 higher than the Starting Bid</p>
-            </strong>
+            <p><strong>Your bid must be a minimum of $1.00 higher than the Highest Bid, for it to be accepted.</strong></p>
+            <p><strong>If no previous bids, your bid must be $1.00 higher than the Starting Bid</strong></p>
 
             <input type="submit" class="btn btn-primary" value="Save">
         </form>
