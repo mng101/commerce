@@ -14,11 +14,11 @@ Unauthenticated user:
 
 Authenticated User:
 
-    Authenticated users are presented with additonal menu options on teh Index page, along 
+    Authenticated users are presented with additonal menu options on the Index page, along 
     with a list of active listings.
     Selecting a listing title presents the Listing Details page
     If the listing is the users own listing, they can update the listing if there are no 
-    bids posted. The User can also Close the Auction, which make sthe highest bidder the
+    bids posted. The User can also Close the Auction, which makes the highest bidder the
     winner of the Auction.
     
     The user can Create a Listing using the menu option on the Index page.
@@ -35,7 +35,7 @@ Authenticated User:
 Admin Access:
 
     The Site Administrator can view, add edit and delete any listing, comment, bids made
-    on the site. The Administrator can also remove listings from a users Watchlist.
+    on the site. The Administrator can also remove listings from a Users Watchlist.
 
 Link to Video posted on Youtube
 
